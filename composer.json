@@ -30,7 +30,7 @@
         }
     },
     "extra": {
-        "postboxcms": {
+        "laravel": {
             "providers": [
                 "PostboxCMS\\Desk\\DeskServiceProvider"
             ]
