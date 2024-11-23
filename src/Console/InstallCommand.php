@@ -36,12 +36,17 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        if ($this->option('with')) {
-            $services = $this->option('with') == 'none' ? [] : explode(',', $this->option('with'));
-        } elseif ($this->option('no-interaction')) {
-            $services = $this->defaultServices;
+        if ($_ENV['APP_ENV'] !== 'production') {
+            if ($this->option('with')) {
+                $services = $this->option('with') == 'none' ? [] : explode(',', $this->option('with'));
+            } elseif ($this->option('no-interaction')) {
+                $services = $this->defaultServices;
+            } else {
+                $services = $this->gatherServicesInteractively();
+            }
         } else {
-            $services = $this->gatherServicesInteractively();
+            $services = [];
+            $this->components->info('Postbox is in production mode! Skipping services selection ...');
         }
 
         if ($invalidServices = array_diff($services, $this->services)) {
