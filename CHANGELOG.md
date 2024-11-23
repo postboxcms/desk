@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/sail/compare/v1.38.0...1.x)
+## [Unreleased](https://github.com/laravel/sail/compare/v1.0.2...1.x)
+
+## [v1.0.2](https://github.com/laravel/sail/compare/v1.38.0...v1.0.2) - 2024-11-23
+
+- Updated vendor path across the repo
 
 ## [v1.38.0](https://github.com/laravel/sail/compare/v1.37.1...v1.38.0) - 2024-11-11
 
