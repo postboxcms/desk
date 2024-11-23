@@ -11,7 +11,7 @@ mysql:
         MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
         - 'desk-mysql:/var/lib/mysql'
-        - './vendor/laravel/desk/database/mysql/create-postbox-database.sh:/docker-entrypoint-initdb.d/10-create-postbox-database.sh'
+        - './vendor/postboxcms/desk/database/mysql/create-postbox-database.sh:/docker-entrypoint-initdb.d/10-create-postbox-database.sh'
     networks:
         - desk
     healthcheck:
