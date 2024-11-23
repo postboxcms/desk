@@ -2,7 +2,7 @@
 services:
     app:
         build:
-            context: ./vendor/laravel/desk/runtimes/{{PHP_VERSION}}
+            context: ./vendor/postboxcms/desk/runtimes/{{PHP_VERSION}}
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'

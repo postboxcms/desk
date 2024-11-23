@@ -9,7 +9,7 @@ pgsql:
         POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
         - 'desk-pgsql:/var/lib/postgresql/data'
-        - './vendor/laravel/desk/database/pgsql/create-postbox-database.sql:/docker-entrypoint-initdb.d/10-create-postbox-database.sql'
+        - './vendor/postboxcms/desk/database/pgsql/create-postbox-database.sql:/docker-entrypoint-initdb.d/10-create-postbox-database.sql'
     networks:
         - desk
     healthcheck:
