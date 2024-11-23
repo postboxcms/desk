@@ -8,10 +8,10 @@ pgsql:
         POSTGRES_USER: '${DB_USERNAME}'
         POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
-        - 'sail-pgsql:/var/lib/postgresql/data'
-        - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+        - 'desk-pgsql:/var/lib/postgresql/data'
+        - './vendor/laravel/desk/database/pgsql/create-postbox-database.sql:/docker-entrypoint-initdb.d/10-create-postbox-database.sql'
     networks:
-        - sail
+        - desk
     healthcheck:
         test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
         retries: 3

@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\Sail\Console;
+namespace PostboxCMS\Desk\Console;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'sail:publish')]
+#[AsCommand(name: 'desk:publish')]
 class PublishCommand extends Command
 {
     /**
@@ -13,14 +13,14 @@ class PublishCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sail:publish';
+    protected $signature = 'desk:publish';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Publish the Laravel Sail Docker files';
+    protected $description = 'Publish the PostboxCMS Desk Docker files';
 
     /**
      * Execute the console command.
@@ -29,20 +29,20 @@ class PublishCommand extends Command
      */
     public function handle()
     {
-        $this->call('vendor:publish', ['--tag' => 'sail-docker']);
-        $this->call('vendor:publish', ['--tag' => 'sail-database']);
+        $this->call('vendor:publish', ['--tag' => 'desk-docker']);
+        $this->call('vendor:publish', ['--tag' => 'desk-database']);
 
         file_put_contents(
             $this->laravel->basePath('docker-compose.yml'),
             str_replace(
                 [
-                    './vendor/laravel/sail/runtimes/8.4',
-                    './vendor/laravel/sail/runtimes/8.3',
-                    './vendor/laravel/sail/runtimes/8.2',
-                    './vendor/laravel/sail/runtimes/8.1',
-                    './vendor/laravel/sail/runtimes/8.0',
-                    './vendor/laravel/sail/database/mysql',
-                    './vendor/laravel/sail/database/pgsql'
+                    './vendor/laravel/desk/runtimes/8.4',
+                    './vendor/laravel/desk/runtimes/8.3',
+                    './vendor/laravel/desk/runtimes/8.2',
+                    './vendor/laravel/desk/runtimes/8.1',
+                    './vendor/laravel/desk/runtimes/8.0',
+                    './vendor/laravel/desk/database/mysql',
+                    './vendor/laravel/desk/database/pgsql'
                 ],
                 [
                     './docker/8.4',

@@ -36,7 +36,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          path: 'sail'
+          path: 'desk'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -50,35 +50,35 @@ jobs:
       - name: Create a new laravel application
         run: composer create-project laravel/laravel app "${{ matrix.laravel }}.x" --remove-vcs --no-interaction --prefer-dist
 
-      - name: Link Sail Repository
+      - name: Link Desk Repository
         run: |
           composer config minimum-stability dev
-          composer config repositories.sail path ../sail
-          composer require laravel/sail:* --dev -W
+          composer config repositories.desk path ../desk
+          composer require laravel/desk:* --dev -W
         working-directory: app
 
-      - name: Install Sail into App
+      - name: Install Desk into App
         run: |
-          php artisan sail:install --php=${{ matrix.php }} --no-interaction
-          php artisan sail:publish --no-interaction
+          php artisan desk:install --php=${{ matrix.php }} --no-interaction
+          php artisan desk:publish --no-interaction
         working-directory: app
 
-      - name: Remove Sail
-        run: composer remove laravel/sail --dev --no-interaction -W
+      - name: Remove Desk
+        run: composer remove laravel/desk --dev --no-interaction -W
         working-directory: app
 
-      - name: Start Sail Container
-        run: ../sail/bin/sail up -d --wait
+      - name: Start Desk Container
+        run: ../desk/bin/desk up -d --wait
         working-directory: app
 
       - name: Run Migrations
-        run: ../sail/bin/sail artisan migrate --no-interaction
+        run: ../desk/bin/desk artisan migrate --no-interaction
         working-directory: app
 
-      - name: Run Tests in Sail Container
-        run: ../sail/bin/sail test
+      - name: Run Tests in Desk Container
+        run: ../desk/bin/desk test
         working-directory: app
 
-      - name: Stop Sail Container
-        run: ../sail/bin/sail down
+      - name: Stop Desk Container
+        run: ../desk/bin/desk down
         working-directory: app

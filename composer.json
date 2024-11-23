@@ -1,16 +1,16 @@
 {
-    "name": "laravel/sail",
-    "description": "Docker files for running a basic Laravel application.",
-    "keywords": ["laravel", "docker"],
+    "name": "postboxcms/desk",
+    "description": "Docker files for running a Postbox CMS instance. Forked from laravel/sail",
+    "keywords": ["postboxcms", "docker", "laravel"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel/sail/issues",
-        "source": "https://github.com/laravel/sail"
+        "issues": "https://github.com/postboxcms/postbox/issues",
+        "source": "https://github.com/postboxcms/desk"
     },
     "authors": [
         {
-            "name": "Taylor Otwell",
-            "email": "taylor@laravel.com"
+            "name": "Sanket Raut",
+            "email": "sanket@digitalbit.in"
         }
     ],
     "require": {
@@ -22,17 +22,17 @@
         "symfony/yaml": "^6.0|^7.0"
     },
     "bin": [
-        "bin/sail"
+        "bin/desk"
     ],
     "autoload": {
         "psr-4": {
-            "Laravel\\Sail\\": "src/"
+            "PostboxCMS\\Desk\\": "src/"
         }
     },
     "extra": {
-        "laravel": {
+        "postboxcms": {
             "providers": [
-                "Laravel\\Sail\\SailServiceProvider"
+                "PostboxCMS\\Desk\\DeskServiceProvider"
             ]
         }
     },
