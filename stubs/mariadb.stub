@@ -1,5 +1,6 @@
 mariadb:
     image: 'mariadb:11'
+    container_name: MariaDB
     ports:
         - '${FORWARD_DB_PORT:-3306}:3306'
     environment:

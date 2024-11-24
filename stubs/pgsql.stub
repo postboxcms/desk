@@ -1,5 +1,6 @@
 pgsql:
     image: 'postgres:17'
+    container_name: PostgresSQL
     ports:
         - '${FORWARD_DB_PORT:-5432}:5432'
     environment:
