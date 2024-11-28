@@ -26,3 +26,4 @@ services:
 networks:
     desk:
         driver: bridge
+        name: postbox

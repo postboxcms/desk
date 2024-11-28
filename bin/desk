@@ -599,5 +599,14 @@ elif [ "$1" == "open" ]; then
     fi
 fi
 
+# Check for production environment flag
+if [ "$1" == "down" ] && [ "$2" == "-v" ]; then
+    source .env
+    if [ "$APP_ENV" == "production" ]; then
+        echo "${RED}Can't proceed with removal of volumes while the application is in production mode! Avoid using '-v' flag${NC}"
+        exit
+    fi
+fi
+
 # Run Docker Compose with the defined arguments...
 "${DOCKER_COMPOSE[@]}" "${ARGS[@]}" "$@"

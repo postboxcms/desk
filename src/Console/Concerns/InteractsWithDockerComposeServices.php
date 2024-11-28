@@ -97,7 +97,7 @@ trait InteractsWithDockerComposeServices
             })->filter(function ($service) use ($compose) {
                 return ! array_key_exists($service, $compose['volumes'] ?? []);
             })->each(function ($service) use (&$compose) {
-                $compose['volumes']["desk-{$service}"] = ['driver' => 'local'];
+                $compose['volumes']["desk-{$service}"] = ['driver' => 'local', 'name' => 'DeskStorage'];
             });
 
         // If the list of volumes is empty, we can remove it...
