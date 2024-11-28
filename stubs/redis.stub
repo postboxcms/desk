@@ -1,5 +1,6 @@
 redis:
     image: 'redis:alpine'
+    container_name: Redis
     ports:
         - '${FORWARD_REDIS_PORT:-6379}:6379'
     volumes:

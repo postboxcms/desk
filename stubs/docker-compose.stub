@@ -2,11 +2,12 @@
 services:
     app:
         build:
-            context: ./vendor/laravel/desk/runtimes/{{PHP_VERSION}}
+            context: ./vendor/postboxcms/desk/runtimes/{{PHP_VERSION}}
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
         image: desk-{{PHP_VERSION}}/app
+        container_name: Postbox
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -25,3 +26,4 @@ services:
 networks:
     desk:
         driver: bridge
+        name: postbox

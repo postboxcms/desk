@@ -1,5 +1,6 @@
 pgsql:
     image: 'postgres:17'
+    container_name: PostgresSQL
     ports:
         - '${FORWARD_DB_PORT:-5432}:5432'
     environment:
@@ -9,7 +10,7 @@ pgsql:
         POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
         - 'desk-pgsql:/var/lib/postgresql/data'
-        - './vendor/laravel/desk/database/pgsql/create-postbox-database.sql:/docker-entrypoint-initdb.d/10-create-postbox-database.sql'
+        - './vendor/postboxcms/desk/database/pgsql/create-postbox-database.sql:/docker-entrypoint-initdb.d/10-create-postbox-database.sql'
     networks:
         - desk
     healthcheck:
