@@ -2,6 +2,8 @@
 
 namespace PostboxCMS\Desk\Console\Concerns;
 
+use Artisan;
+use Str;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
@@ -112,6 +114,25 @@ trait InteractsWithDockerComposeServices
         file_put_contents($this->laravel->basePath('docker-compose.yml'), $yaml);
     }
 
+        /**
+     * Generate .env file through environment stub
+     */
+    protected function generateEnvionmentFile() {
+        $envDump = Yaml::parse(file_get_contents(__DIR__ . '/../../../stubs/environment.stub'));
+        $envDump['DB_PASSWORD'] = Str::random(10);
+
+        $envContents = '';
+
+        foreach ($envDump as $var => $val):
+            $envContents .= $var .'='. $val . PHP_EOL;
+        endforeach;
+
+        file_put_contents($this->laravel->basePath('.env'), $envContents);
+
+        Artisan::call('key:generate');
+    }
+
+
     /**
      * Replace the Host environment variables in the app's .env file.
      *
@@ -120,7 +141,12 @@ trait InteractsWithDockerComposeServices
      */
     protected function replaceEnvVariables(array $services)
     {
-        $environment = file_get_contents($this->laravel->basePath('.env'));
+        if(file_exists($this->laravel->basePath('.env'))) {
+            $environment = file_get_contents($this->laravel->basePath('.env'));
+        } else {
+            $this->generateEnvionmentFile();
+            return;
+        }
 
         if (in_array('mysql', $services) ||
             in_array('mariadb', $services) ||
