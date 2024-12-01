@@ -600,7 +600,12 @@ elif [ "$1" == "open" ]; then
     fi
 fi
 
-# Check for production environment flag
+# Create images folder on the fly (PostboxCMS)
+if [ "$1" == "up" ]; then
+    mkdir -p public/images
+fi
+
+# Check for production environment flag (PostboxCMS)
 if [ "$1" == "down" ] && [ "$2" == "-v" ]; then
     source .env
     if [ "$APP_ENV" == "production" ]; then
