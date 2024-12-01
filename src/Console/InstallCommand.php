@@ -36,21 +36,16 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        if ($_ENV['APP_ENV'] !== 'production') {
-            if ($this->option('with')) {
-                $services = $this->option('with') == 'none' ? [] : explode(',', $this->option('with'));
-            } elseif ($this->option('no-interaction')) {
-                $services = $this->defaultServices;
-            } else {
-                $services = $this->gatherServicesInteractively();
-            }
+        if ($this->option('with')) {
+            $services = $this->option('with') == 'none' ? [] : explode(',', $this->option('with'));
+        } elseif ($this->option('no-interaction')) {
+            $services = $this->defaultServices;
         } else {
-            $services = [];
-            $this->components->info('Postbox is in production mode! Skipping services selection ...');
+            $services = $this->gatherServicesInteractively();
         }
 
         if ($invalidServices = array_diff($services, $this->services)) {
-            $this->components->error('Invalid services ['.implode(',', $invalidServices).'].');
+            $this->components->error('Invalid services [' . implode(',', $invalidServices) . '].');
 
             return 1;
         }
@@ -70,9 +65,11 @@ class InstallCommand extends Command
 
         $this->output->writeln('<fg=gray>➜</> <options=bold>./vendor/bin/desk up</>');
 
-        if (in_array('mysql', $services) ||
+        if (
+            in_array('mysql', $services) ||
             in_array('mariadb', $services) ||
-            in_array('pgsql', $services)) {
+            in_array('pgsql', $services)
+        ) {
             $this->components->warn('A database service was installed. Run "artisan migrate" to prepare your database:');
 
             $this->output->writeln('<fg=gray>➜</> <options=bold>./vendor/bin/desk artisan migrate</>');

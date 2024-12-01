@@ -1,4 +1,4 @@
-<p align="center"><img width="294" height="69" src="/art/logo.svg" alt="Logo Laravel Sail"></p>
+<p align="center"><img height="69" src="/art/postbox.jpg" alt="Logo PostboxCMS Desk"></p>
 
 <p align="center">
 <a href="https://packagist.org/packages/postboxcms/desk"><img src="https://img.shields.io/packagist/dt/postboxcms/desk" alt="Total Downloads"></a>
