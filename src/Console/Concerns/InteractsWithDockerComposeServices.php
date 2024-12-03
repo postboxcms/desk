@@ -186,7 +186,7 @@ trait InteractsWithDockerComposeServices
         if (file_exists($this->laravel->basePath('.env'))) {
             $environment = file_get_contents($this->laravel->basePath('.env'));
         } else {
-            $this->generateEnvionmentFile();
+            $this->generateEnvironmentFile();
             return;
         }
 
