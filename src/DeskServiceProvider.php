@@ -5,6 +5,7 @@ namespace PostboxCMS\Desk;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use PostboxCMS\Desk\Console\AddCommand;
+use PostboxCMS\Desk\Console\CreateUserCommand;
 use PostboxCMS\Desk\Console\InstallCommand;
 use PostboxCMS\Desk\Console\PublishCommand;
 
@@ -33,6 +34,7 @@ class DeskServiceProvider extends ServiceProvider implements DeferrableProvider
                 InstallCommand::class,
                 AddCommand::class,
                 PublishCommand::class,
+                CreateUserCommand::class
             ]);
         }
     }

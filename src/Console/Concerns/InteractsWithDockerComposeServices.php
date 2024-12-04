@@ -114,6 +114,26 @@ trait InteractsWithDockerComposeServices
         file_put_contents($this->laravel->basePath('docker-compose.yml'), $yaml);
     }
 
+        /**
+     * Generate text field prompt
+     */
+    private function _passwordFieldPrompt($question, $matches = '')
+    {
+        if (function_exists('\Laravel\Prompts\password')) {
+            return \Laravel\Prompts\password(
+                label: $question,
+                validate: fn(string $value) => match (true) {
+                    strlen($value) < 6 => 'The password must be at least 6 characters.',
+                    default => null,
+                },
+                required: true
+            );
+        }
+
+        return $this->question($question);
+    }
+
+
     /**
      * Generate text field prompt
      */
