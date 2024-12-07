@@ -114,10 +114,10 @@ trait InteractsWithDockerComposeServices
         file_put_contents($this->laravel->basePath('docker-compose.yml'), $yaml);
     }
 
-        /**
+    /**
      * Generate text field prompt
      */
-    private function _passwordFieldPrompt($question, $matches = '')
+    protected function passwordFieldPrompt($question, $matches = '')
     {
         if (function_exists('\Laravel\Prompts\password')) {
             return \Laravel\Prompts\password(
@@ -137,24 +137,24 @@ trait InteractsWithDockerComposeServices
     /**
      * Generate text field prompt
      */
-    private function _textFieldPrompt($question, $placeholder, $default = '')
+    protected function textFieldPrompt($question, $default = '')
     {
         if (function_exists('\Laravel\Prompts\text')) {
             $prompt = \Laravel\Prompts\text(
                 label: $question,
-                placeholder: $placeholder,
+                placeholder: $default,
                 default: $default,
             );
-            return $prompt == '' ? $placeholder : $prompt;
+            return $prompt == '' ? $default : $prompt;
         }
 
-        return $this->question($question) == '' ? $placeholder : $this->question($question);
+        return $this->question($question) == '' ? $default : $this->question($question);
     }
 
     /**
      * Generate option prompt
      */
-    private function _optionPrompt($question, $options, $default, $attempts = null)
+    protected function optionPrompt($question, $options, $default, $attempts = null)
     {
         if (function_exists('\Laravel\Prompts\select')) {
             return \Laravel\Prompts\select(
@@ -173,15 +173,20 @@ trait InteractsWithDockerComposeServices
     protected function generateEnvironmentFile()
     {
         $envContents = '';
-        $envDump = Yaml::parse(file_get_contents(__DIR__ . '/../../../stubs/environment.stub'));
+        if (file_exists($this->laravel->basePath('.env'))) {
+            $envDump = parse_ini_file($this->laravel->basePath('.env'), true, INI_SCANNER_RAW);
+        } else {
+            $envDump = Yaml::parse(file_get_contents(__DIR__ . '/../../../stubs/environment.stub'));
+        }
 
         // Prompt for user choices
-        $envDump['APP_URL'] = $this->_textFieldPrompt('What is your web application url?', 'http://localhost');
-        $envDump['APP_PORT'] = $this->_textFieldPrompt('What port is your web application running upon?', 80);
-        $envDump['APP_ENV'] = $this->_optionPrompt('Select your web application environment settings', ['production' => 'Production', 'local' => 'Local'], 'production');
-        $envDump['APP_DEBUG'] = $this->_optionPrompt('Do you wish to turn on debugging?', ['true' => 'Yes', 'false' => 'No'], 'false');
+        $envDump['APP_URL'] = $this->textFieldPrompt('What is your web application url?', $envDump['APP_URL']);
+        $envDump['APP_PORT'] = $this->textFieldPrompt('What port is your web application running upon?', $envDump['APP_PORT']);
+        $envDump['APP_ENV'] = $this->optionPrompt('Select your web application environment settings', ['production' => 'Production', 'local' => 'Local'], $envDump['APP_ENV']);
+        $envDump['APP_DEBUG'] = $this->optionPrompt('Do you wish to turn on debugging?', ['true' => 'Yes', 'false' => 'No'], $envDump['APP_DEBUG']);
 
         // Generate a random database password
+        $envDump['DB_HOST'] = "mysql";
         $envDump['DB_PASSWORD'] = Str::random(10);
 
         foreach ($envDump as $var => $val):
@@ -191,6 +196,8 @@ trait InteractsWithDockerComposeServices
         file_put_contents($this->laravel->basePath('.env'), $envContents);
 
         Artisan::call('key:generate');
+
+        return file_get_contents($this->laravel->basePath('.env'));
     }
 
 
@@ -203,12 +210,7 @@ trait InteractsWithDockerComposeServices
      */
     protected function replaceEnvVariables(array $services)
     {
-        if (file_exists($this->laravel->basePath('.env'))) {
-            $environment = file_get_contents($this->laravel->basePath('.env'));
-        } else {
-            $this->generateEnvironmentFile();
-            return;
-        }
+        $environment = $this->generateEnvironmentFile();
 
         if (
             in_array('mysql', $services) ||

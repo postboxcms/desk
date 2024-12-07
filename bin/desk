@@ -609,8 +609,16 @@ fi
 if [ "$1" == "down" ] && [ "$2" == "-v" ]; then
     source .env
     if [ "$APP_ENV" == "production" ]; then
-        echo "${RED}Can't proceed with removal of volumes while the application is in production mode! Avoid using '-v' flag${NC}"
-        exit
+        while true; do
+            read -p "${YELLOW}Application is in production mode. This will wipe out the database. It's better to avoid '-v' argument."$'\n'"${RED}Do you wish to proceed? (yes/no) " yn
+            case $yn in
+            [Yy]*)
+                break
+                ;;
+            [Nn]*) exit ;;
+            *) echo "Please answer yes or no." ;;
+            esac
+        done
     fi
 fi
 
