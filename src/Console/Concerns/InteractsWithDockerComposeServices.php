@@ -180,6 +180,7 @@ trait InteractsWithDockerComposeServices
         }
 
         // Prompt for user choices
+        $envDump['APP_NAME'] = $this->textFieldPrompt('What is your web application name?', $envDump['APP_NAME']);
         $envDump['APP_URL'] = $this->textFieldPrompt('What is your web application url?', $envDump['APP_URL']);
         $envDump['APP_PORT'] = $this->textFieldPrompt('What port is your web application running upon?', $envDump['APP_PORT']);
         $envDump['APP_ENV'] = $this->optionPrompt('Select your web application environment settings', ['production' => 'Production', 'local' => 'Local'], $envDump['APP_ENV']);
