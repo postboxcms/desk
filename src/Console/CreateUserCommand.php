@@ -4,7 +4,7 @@ namespace PostboxCMS\Desk\Console;
 
 use Illuminate\Console\Command;
 
-#[AsCommand(name: 'desk:adduser')]
+#[AsCommand(name: 'cms:adduser')]
 class CreateUserCommand extends Command
 {
     use Concerns\InteractsWithDockerComposeServices;
@@ -13,7 +13,7 @@ class CreateUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'desk:adduser';
+    protected $signature = 'cms:adduser';
 
     /**
      * The console command description.
@@ -28,9 +28,9 @@ class CreateUserCommand extends Command
     public function handle()
     {
         // prompts to enter user information
-        $name = $this->_textFieldPrompt('Please enter your full name', 'Admin');
-        $email = $this->_textFieldPrompt('Please enter your email address', 'admin@admin.com');
-        $password = $this->_passwordFieldPrompt('Please enter user password');
+        $name = $this->textFieldPrompt('Please enter your full name', 'Admin');
+        $email = $this->textFieldPrompt('Please enter your email address', 'admin@admin.com');
+        $password = $this->passwordFieldPrompt('Please enter user password');
 
         try {
             $data = [
@@ -39,13 +39,18 @@ class CreateUserCommand extends Command
                 'password' => bcrypt($password),
             ];
             $user = \App\Models\User::create($data);
-            $user->createToken(env('APP_NAME').' Token')->accessToken;
-    
-            $this->output->writeln('<fg=green>➜</> <options=bold><fg=green>SUCCESS:</> User created successfully</>');
-        } catch(\Exception $e) {
-            \App\Models\User::where('email',$email)->delete();
+            
+            try {
+                $user->createToken(env('APP_NAME') . ' Token')->accessToken;
+            } catch (\Exception $e) {
+                \App\Models\User::where('email', $email)->delete();
+                $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
+                return;
+            }
 
-            $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: '.$e->getMessage().'</>');
+            $this->output->writeln('<fg=green>➜</> <options=bold><fg=green>SUCCESS:</> User created successfully</>');
+        } catch (\Exception $e) {
+            $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
         }
 
     }
