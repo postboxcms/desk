@@ -2,12 +2,14 @@
 
 namespace PostboxCMS\Desk\Console;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
 #[AsCommand(name: 'cms:adduser')]
 class CreateUserCommand extends Command
 {
     use Concerns\InteractsWithDockerComposeServices;
+
     /**
      * The name and signature of the console command.
      *
@@ -38,15 +40,15 @@ class CreateUserCommand extends Command
                 'email' => $email,
                 'password' => bcrypt($password),
             ];
-            $user = \App\Models\User::create($data);
+            DB::table('users')->insert($data);
             
-            try {
-                $user->createToken(env('APP_NAME') . ' Token')->accessToken;
-            } catch (\Exception $e) {
-                \App\Models\User::where('email', $email)->delete();
-                $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
-                return;
-            }
+            // try {
+            //     $this->createToken(env('APP_NAME') . ' Token')->accessToken;
+            // } catch (\Exception $e) {
+            //     DB::table('users')->where('email', $email)->delete();
+            //     $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
+            //     return;
+            // }
 
             $this->output->writeln('<fg=green>➜</> <options=bold><fg=green>SUCCESS:</> User created successfully</>');
         } catch (\Exception $e) {
