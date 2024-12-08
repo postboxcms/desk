@@ -32,15 +32,15 @@ class SetupCommand extends Command
 
         try {
             // migrate database
-            Artisan::call('migrate:refresh');
+            Artisan::call('migrate:refresh',['--no-interaction' => true]);
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database migration complete!</>');
 
             // setup basic content types
-            Artisan::call('db:seed');
+            Artisan::call('db:seed',['--no-interaction' => true]);
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database seeding complete!</>');
 
             // setup passport authentication
-            Artisan::call('passport:install');
+            Artisan::call('passport:install',['--no-interaction' => true]);
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Authentication setup complete!</>');
 
             $this->output->writeln('<fg=green>➜</> <options=bold><fg=green>SUCCESS:</> Your CMS is ready !!</>');
