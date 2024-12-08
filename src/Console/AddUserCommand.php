@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
 #[AsCommand(name: 'cms:adduser')]
-class CreateUserCommand extends Command
+class AddUserCommand extends Command
 {
     use Concerns\InteractsWithDockerComposeServices;
 
@@ -42,13 +42,13 @@ class CreateUserCommand extends Command
             ];
             DB::table('users')->insert($data);
             
-            // try {
-            //     $this->createToken(env('APP_NAME') . ' Token')->accessToken;
-            // } catch (\Exception $e) {
-            //     DB::table('users')->where('email', $email)->delete();
-            //     $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
-            //     return;
-            // }
+            try {
+                $this->createToken(env('APP_NAME') . ' Token')->accessToken;
+            } catch (\Exception $e) {
+                DB::table('users')->where('email', $email)->delete();
+                $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
+                return;
+            }
 
             $this->output->writeln('<fg=green>➜</> <options=bold><fg=green>SUCCESS:</> User created successfully</>');
         } catch (\Exception $e) {
