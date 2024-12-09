@@ -168,6 +168,31 @@ trait InteractsWithDockerComposeServices
     }
 
     /**
+     * Generate confirm prompt
+     */
+    protected function confirmPrompt($question, $default, $yes, $no, $hint = '') {
+        if (function_exists('\Laravel\Prompts\confirm')) {
+            return \Laravel\Prompts\confirm(
+                label: $question,
+                default: $default,
+                yes: $yes,
+                no: $no,
+                hint: $hint
+            );
+        }
+
+        return $this->choice($question, ['true' => $yes, 'no' => $no], $default);
+    }
+
+    /**
+     * Generate env if not specified
+     */
+    protected function getEnv($env, $default)
+    {
+        return isset($env) ? $env : $default;
+    }
+
+    /**
      * Generate .env file through environment stub
      */
     protected function generateEnvironmentFile()
@@ -180,10 +205,11 @@ trait InteractsWithDockerComposeServices
         }
 
         // Prompt for user choices
-        $envDump['APP_URL'] = $this->textFieldPrompt('What is your web application url?', $envDump['APP_URL']);
-        $envDump['APP_PORT'] = $this->textFieldPrompt('What port is your web application running upon?', $envDump['APP_PORT']);
-        $envDump['APP_ENV'] = $this->optionPrompt('Select your web application environment settings', ['production' => 'Production', 'local' => 'Local'], $envDump['APP_ENV']);
-        $envDump['APP_DEBUG'] = $this->optionPrompt('Do you wish to turn on debugging?', ['true' => 'Yes', 'false' => 'No'], $envDump['APP_DEBUG']);
+        $envDump['APP_NAME'] = $this->textFieldPrompt('What is your web application name?', $this->getEnv($envDump['APP_NAME'], 'Postbox'));
+        $envDump['APP_URL'] = $this->textFieldPrompt('What is your web application url?', $this->getEnv($envDump['APP_URL'], 'http://localhost'));
+        $envDump['APP_PORT'] = $this->textFieldPrompt('What port is your web application running upon?', $this->getEnv($envDump['APP_PORT'], 80));
+        $envDump['APP_ENV'] = $this->optionPrompt('Select your web application environment settings', ['production' => 'Production', 'local' => 'Local'], $this->getEnv($envDump['APP_ENV'], 'production'));
+        $envDump['APP_DEBUG'] = $this->optionPrompt('Do you wish to turn on debugging?', ['true' => 'Yes', 'false' => 'No'], $this->getEnv($envDump['APP_DEBUG'], false));
 
         // Generate a random database password
         $envDump['DB_HOST'] = "mysql";
