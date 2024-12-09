@@ -40,7 +40,7 @@ class SetupCommand extends Command
 
         try {
             // migrate database
-            Artisan::call('migrate:refresh',['--no-interaction' => true]);
+            Artisan::call('migrate',['--no-interaction' => true]);
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database migration complete!</>');
 
             // setup basic content types
