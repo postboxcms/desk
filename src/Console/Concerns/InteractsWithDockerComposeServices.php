@@ -167,6 +167,26 @@ trait InteractsWithDockerComposeServices
         return $this->choice($question, $options, $default, $attempts, false);
     }
 
+    /**
+     * Generate confirm prompt
+     */
+    protected function confirmPrompt($question, $default, $yes, $no, $hint = '') {
+        if (function_exists('\Laravel\Prompts\confirm')) {
+            return \Laravel\Prompts\confirm(
+                label: $question,
+                default: $default,
+                yes: $yes,
+                no: $no,
+                hint: $hint
+            );
+        }
+
+        return $this->choice($question, ['true' => $yes, 'no' => $no], $default);
+    }
+
+    /**
+     * Generate env if not specified
+     */
     protected function getEnv($env, $default)
     {
         return isset($env) ? $env : $default;

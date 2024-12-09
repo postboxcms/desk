@@ -28,6 +28,13 @@ class SetupCommand extends Command
      */
     public function handle()
     {
+        if(isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'production') {
+            $confirm = $this->confirmPrompt('Application in production mode. Are you sure you want to continue?', false, 'Yes', 'No');
+            if(!$confirm) {
+                return false;
+            }
+        }
+
         $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Setting up CMS essentials, please wait ...</>');
 
         try {
