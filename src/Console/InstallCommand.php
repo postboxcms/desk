@@ -70,9 +70,9 @@ class InstallCommand extends Command
             in_array('mariadb', $services) ||
             in_array('pgsql', $services)
         ) {
-            $this->components->warn('A database service was installed. Run "artisan migrate" to prepare your database:');
+            $this->components->warn('A database service was installed. Run "artisan cms:setup" to setup your application:');
 
-            $this->output->writeln('<fg=gray>➜</> <options=bold>./vendor/bin/desk artisan migrate</>');
+            $this->output->writeln('<fg=gray>➜</> <options=bold>./vendor/bin/desk artisan cms:setup</>');
         }
 
         $this->output->writeln('');
