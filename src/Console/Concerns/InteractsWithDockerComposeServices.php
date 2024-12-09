@@ -187,9 +187,9 @@ trait InteractsWithDockerComposeServices
     /**
      * Generate env if not specified
      */
-    protected function getEnv($env, $default)
+    protected function getEnv($env, $key, $default)
     {
-        return isset($env) ? $env : $default;
+        return isset($env[$key]) ? $env[$key] : $default;
     }
 
     /**
@@ -205,14 +205,16 @@ trait InteractsWithDockerComposeServices
         }
 
         // Prompt for user choices
-        $envDump['APP_NAME'] = $this->textFieldPrompt('What is your web application name?', $this->getEnv($envDump['APP_NAME'], 'Postbox'));
-        $envDump['APP_URL'] = $this->textFieldPrompt('What is your web application url?', $this->getEnv($envDump['APP_URL'], 'http://localhost'));
-        $envDump['APP_PORT'] = $this->textFieldPrompt('What port is your web application running upon?', $this->getEnv($envDump['APP_PORT'], 80));
-        $envDump['APP_ENV'] = $this->optionPrompt('Select your web application environment settings', ['production' => 'Production', 'local' => 'Local'], $this->getEnv($envDump['APP_ENV'], 'production'));
-        $envDump['APP_DEBUG'] = $this->optionPrompt('Do you wish to turn on debugging?', ['true' => 'Yes', 'false' => 'No'], $this->getEnv($envDump['APP_DEBUG'], false));
+        $envDump['APP_NAME'] = $this->textFieldPrompt('What is your web application name?', $this->getEnv($envDump, 'APP_NAME', 'Postbox'));
+        $envDump['APP_URL'] = $this->textFieldPrompt('What is your web application url?', $this->getEnv($envDump, 'APP_URL', 'http://localhost'));
+        $envDump['APP_PORT'] = $this->textFieldPrompt('What port is your web application running upon?', $this->getEnv($envDump, 'APP_PORT', 80));
+        $envDump['APP_ENV'] = $this->optionPrompt('Select your web application environment settings', ['production' => 'Production', 'local' => 'Local'], $this->getEnv($envDump, 'APP_ENV', 'production'));
+        $envDump['APP_DEBUG'] = $this->optionPrompt('Do you wish to turn on debugging?', ['true' => 'Yes', 'false' => 'No'], $this->getEnv($envDump, 'APP_DEBUG', false));
+
+        $envDump['DB_DATABASE'] = $this->textFieldPrompt('Please enter a name for your database', $this->getEnv($envDump, 'DB_DATABASE', 'postbox'));
+        $envDump['DB_HOST'] = "127.0.0.1";
 
         // Generate a random database password
-        $envDump['DB_HOST'] = "mysql";
         $envDump['DB_PASSWORD'] = Str::random(10);
 
         foreach ($envDump as $var => $val):

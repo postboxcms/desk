@@ -2,7 +2,7 @@
 
 namespace PostboxCMS\Desk\Console;
 
-use Illuminate\Support\Facades\DB;
+use PostboxCMS\Desk\Console\Models\User;
 use Illuminate\Console\Command;
 
 #[AsCommand(name: 'cms:adduser')]
@@ -40,12 +40,12 @@ class AddUserCommand extends Command
                 'email' => $email,
                 'password' => bcrypt($password),
             ];
-            DB::table('users')->insert($data);
+            $user = User::create($data);
             
             try {
-                $this->createToken(env('APP_NAME') . ' Token')->accessToken;
+                $user->createToken(env('APP_NAME') . ' Token');
             } catch (\Exception $e) {
-                DB::table('users')->where('email', $email)->delete();
+                User::where('email', $email)->delete();
                 $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
                 return;
             }

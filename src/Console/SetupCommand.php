@@ -4,6 +4,7 @@ namespace PostboxCMS\Desk\Console;
 
 use Artisan;
 use Illuminate\Console\Command;
+use Number;
 
 #[AsCommand(name: 'cms:setup')]
 class SetupCommand extends Command
@@ -47,7 +48,13 @@ class SetupCommand extends Command
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database seeding complete!</>');
 
             // setup passport authentication
-            Artisan::call('passport:install',['--no-interaction' => true]);
+            $framework = app()->version();
+            if((float) $framework >= 11.0) {
+                Artisan::call('install:api',['--no-interaction' => true, '--passport' => true]);
+            } else {
+                Artisan::call('passport:install',['--no-interaction' => true]);
+            }
+
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Authentication setup complete!</>');
 
             $this->output->writeln('<fg=green>➜</> <options=bold><fg=green>SUCCESS:</> Your CMS is ready !!</>');
