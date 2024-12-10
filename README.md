@@ -8,7 +8,16 @@
 
 ## Introduction
 
-Desk provides a Docker powered experience for Laravel that is compatible with macOS, Windows (WSL2), and Linux. Other than Docker, no software or libraries are required to be installed on your local computer before using Sail. Sail's simple CLI means you can start building your Laravel application without any previous Docker experience.
+Desk provides a Docker powered experience for Laravel that is compatible with macOS, Windows (WSL2), and Linux. Other than Docker, no software or libraries are required to be installed on your local computer before using Desk. Desk's simple CLI means you can start building your Laravel application without any previous Docker experience. Desk uses and installs Laravel Passport for creating new users in your application.
+
+## Getting started
+
+To get started with Desk, run the following commands:
+* Include the package within your laravel application by running the following command `composer require postboxcms/desk --dev`
+* To install Desk, simply run `php artisan desk:install`
+* To get the containers up and running use the command `desk up -d`
+* To setup your application with **Laravel Passport** and update environment configurations run `desk artisan cms:setup`
+* To add a new user to the application run `desk cms:adduser` and follow the instructions
 
 #### Inspiration
 
