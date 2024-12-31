@@ -71,3 +71,6 @@ MIX_API_ROUTE: /api
 MIX_APP_URL: '${APP_URL}'
 MIX_APP_PORT: '${APP_PORT}'
 MIX_APP_NAME: '${APP_NAME}'
+MIX_COMPANY_NAME: 'Digitalbit Labs'
+MIX_COMPANY_URL: 'https://digitalbit.in'
+MIX_COMPANY_YEAR: 2024
