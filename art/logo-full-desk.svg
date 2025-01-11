@@ -18,7 +18,7 @@
         #logo_orange {fill: #FF5733}
         #logo_green {fill: #50C878;left: 125px;transform: translate(84px, 102px) rotate(180deg);}
         #logo_blue {fill: #0096FF}
-        #logo_txt {fill: #281548;transform: translate(105px, 77px);font-size: 90px;font-family: 'Comfortaa';}
+        #logo_txt {fill: #153676;transform: translate(105px, 77px);font-size: 90px;font-family: 'Comfortaa';}
         #logo_subtxt {fill: #fb0a8d;transform: translate(510px, 70px);font-size: 50px;font-family: 'Comfortaa';}
         #logo_seperator {fill: #e1e1e1;transform: translate(483px, 70px);font-size: 70px;font-family: 'Comfortaa';}
         @media (prefers-color-scheme:dark) { #logo_txt { fill: #fff } #logo_seperator { fill: #444} }
