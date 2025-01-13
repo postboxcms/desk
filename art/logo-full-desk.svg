@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="img" version="1.1" xmlns="http://www.w3.org/2000/svg" width="700" height="100">
+<svg id="img" version="1.1" xmlns="http://www.w3.org/2000/svg" width="700" height="105">
     <defs>
         <style>
             @font-face {
@@ -15,9 +15,9 @@
         </style>
     </defs>
     <style>
-        #logo_orange {fill: #FF5733}
-        #logo_green {fill: #50C878;left: 125px;transform: translate(84px, 102px) rotate(180deg);}
-        #logo_blue {fill: #0096FF}
+        #logo_orange {fill: #ff2065}
+        #logo_green {fill: #37d392;left: 125px;transform: translate(84px, 102px) rotate(180deg);}
+        #logo_blue {fill: #ffc43c}
         #logo_txt {fill: #153676;transform: translate(105px, 77px);font-size: 90px;font-family: 'Comfortaa';}
         #logo_subtxt {fill: #fb0a8d;transform: translate(510px, 70px);font-size: 50px;font-family: 'Comfortaa';}
         #logo_seperator {fill: #e1e1e1;transform: translate(483px, 70px);font-size: 70px;font-family: 'Comfortaa';}
