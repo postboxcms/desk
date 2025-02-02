@@ -137,13 +137,14 @@ trait InteractsWithDockerComposeServices
     /**
      * Generate text field prompt
      */
-    protected function textFieldPrompt($question, $default = '')
+    protected function textFieldPrompt($question, $default = '', $required = false)
     {
         if (function_exists('\Laravel\Prompts\text')) {
             $prompt = \Laravel\Prompts\text(
                 label: $question,
                 placeholder: $default,
                 default: $default,
+                required: $required
             );
             return $prompt == '' ? $default : $prompt;
         }

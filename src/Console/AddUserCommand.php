@@ -15,7 +15,7 @@ class AddUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:adduser';
+    protected $signature = 'cms:add-user';
 
     /**
      * The console command description.
