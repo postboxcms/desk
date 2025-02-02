@@ -417,4 +417,13 @@ trait InteractsWithDockerComposeServices
             $this->output->write('    ' . $line);
         });
     }
+
+    /**
+     * Parse input string
+     * @param string $str
+     * @return string
+     */
+    protected function parseInput($str) {
+        return ucwords(str_replace(['_',' '], ['',''], $str));
+    }
 }

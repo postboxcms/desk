@@ -32,8 +32,8 @@ class AddEntityCommand extends Command
     protected function processEntry($entry)
     {
         $entry['slug'] = isset($entry['slug']) && $entry['slug'] !== null ? $entry['slug'] : strtolower($entry['name']);
-        $entry['icon'] = isset($entry['icon']) && $entry['icon'] !== null ? $entry['icon'] : 'fa-square';
-        $entry['model'] = isset($entry['model']) && $entry['model'] !== null ? $entry['model'] : ucfirst($entry['name']);
+        $entry['icon'] = isset($entry['icon']) && $entry['icon'] !== null && $entry['icon'] !== "" ? $entry['icon'] : 'fa-square';
+        $entry['model'] = isset($entry['model']) && $entry['model'] !== null ? $this->parseInput($entry['model']) : $this->parseInput($entry['name']);
 
         return $entry;
     }
@@ -66,11 +66,11 @@ class AddEntityCommand extends Command
     public function handle()
     {
         $data = [
-            'name' => $this->textFieldPrompt('Enter the name of the entity','', true),
-            'description' => $this->textFieldPrompt('Enter the description of the entity','', true),
+            'name' => $this->textFieldPrompt('Enter the name of the entity', '', true),
+            'description' => $this->textFieldPrompt('Enter the description of the entity', '', true),
             'model' => $this->textFieldPrompt('Enter model for your entity', '', true),
             'slug' => $this->textFieldPrompt('Enter slug for your entity'),
-            'icon' => $this->textFieldPrompt('Enter fontawesome icon for your entity'),
+            'icon' => $this->textFieldPrompt('Enter fontawesome icon for your entity (for example: `fa-code`)'),
         ];
 
         $validator = Validator::make($data, [
@@ -87,7 +87,7 @@ class AddEntityCommand extends Command
             $entity = $this->processEntry($data);
             Entities::create($entity);
             $this->generateSchema($entity['model']);
-            $this->info('Entity created successfully.');
+            $this->output->writeln('<fg=green>➜</> <options=bold><fg=green>SUCCESS:</> Entity created successfully</>');
         } catch (\Exception $exception) {
             $this->error('DB operation failed: ' . $exception->getMessage());
             return 1;
