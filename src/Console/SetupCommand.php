@@ -15,7 +15,7 @@ class SetupCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:setup';
+    protected $signature = 'cms:setup {--refresh}';
 
     /**
      * The console command description.
@@ -40,7 +40,12 @@ class SetupCommand extends Command
 
         try {
             // migrate database
-            Artisan::call('migrate',['--no-interaction' => true]);
+            if($this->option('refresh')) {
+                Artisan::call('migrate:refresh',['--no-interaction' => true]);
+            } else {
+                Artisan::call('migrate',['--no-interaction' => true]);
+            }
+            
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database migration complete!</>');
 
             // setup basic content types
