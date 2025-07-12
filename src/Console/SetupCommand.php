@@ -57,7 +57,7 @@ class SetupCommand extends Command
             if((float) $framework >= 11.0) {
                 Artisan::call('install:api',['--no-interaction' => true, '--passport' => true]);
             } else {
-                Artisan::call('passport:install',['--no-interaction' => true]);
+                Artisan::call('passport:install',['--no-interaction' => true, '--uuids' => true]);
             }
 
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Authentication setup complete!</>');
