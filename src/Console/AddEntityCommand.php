@@ -4,6 +4,7 @@ namespace PostboxCMS\Desk\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use PostboxCMS\Desk\Console\Models\Entities;
 use Schema;
