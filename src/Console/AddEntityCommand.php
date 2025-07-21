@@ -46,7 +46,8 @@ class AddEntityCommand extends Command
         try {
             // Generate table
             Schema::connection('mysql')->create(strtolower($model), function ($schema) {
-                $schema->increments('id');
+                $schema->id();
+                $schema->uuid('uuid')->index()->default(DB::raw('(uuid())'))->index();
                 $schema->timestamps();
             });
             // Generate model
