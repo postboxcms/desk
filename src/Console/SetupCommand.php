@@ -15,7 +15,9 @@ class SetupCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:setup {--refresh}';
+    protected $signature = 'cms:setup 
+                            {--refresh : Refresh the database migrations}
+                            {--standalone : Run setup without Docker}';
 
     /**
      * The console command description.
@@ -29,9 +31,9 @@ class SetupCommand extends Command
      */
     public function handle()
     {
-        if(isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'production') {
+        if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'production') {
             $confirm = $this->confirmPrompt('Application in production mode. Are you sure you want to continue?', false, 'Yes', 'No');
-            if(!$confirm) {
+            if (!$confirm) {
                 return false;
             }
         }
@@ -40,24 +42,24 @@ class SetupCommand extends Command
 
         try {
             // migrate database
-            if($this->option('refresh')) {
-                Artisan::call('migrate:refresh',['--no-interaction' => true]);
+            if ($this->option('refresh')) {
+                Artisan::call('migrate:refresh', ['--no-interaction' => true]);
             } else {
-                Artisan::call('migrate',['--no-interaction' => true]);
+                Artisan::call('migrate', ['--no-interaction' => true]);
             }
-            
+
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database migration complete!</>');
 
             // setup basic content types
-            Artisan::call('db:seed',['--no-interaction' => true]);
+            Artisan::call('db:seed', ['--no-interaction' => true]);
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database seeding complete!</>');
 
             // setup passport authentication
             $framework = app()->version();
-            if((float) $framework >= 11.0) {
-                Artisan::call('install:api',['--no-interaction' => true, '--passport' => true]);
+            if ((float) $framework >= 11.0) {
+                Artisan::call('install:api', ['--no-interaction' => true, '--passport' => true]);
             } else {
-                Artisan::call('passport:install',['--no-interaction' => true, '--uuids' => true]);
+                Artisan::call('passport:install', ['--no-interaction' => true, '--uuids' => true]);
             }
 
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Authentication setup complete!</>');
