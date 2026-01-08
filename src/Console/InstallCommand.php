@@ -20,7 +20,8 @@ class InstallCommand extends Command
     protected $signature = 'desk:install
                 {--with= : The services that should be included in the installation}
                 {--devcontainer : Create a .devcontainer configuration directory}
-                {--php=8.3 : The PHP version that should be used}';
+                {--php=8.3 : The PHP version that should be used}
+                {--standalone : Skip Docker installation and proceed with manual setup}';
 
     /**
      * The console command description.
@@ -36,6 +37,9 @@ class InstallCommand extends Command
      */
     public function handle()
     {
+        if ($this->option('standalone')) {
+            return $this->output->writeln('<fg=yellow>INFO:</> Skipping docker installation. Please proceed with manual LAMP/LEMP stack setup.');
+        }
         if ($this->option('with')) {
             $services = $this->option('with') == 'none' ? [] : explode(',', $this->option('with'));
         } elseif ($this->option('no-interaction')) {
