@@ -41,25 +41,38 @@ class SetupCommand extends Command
         $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Setting up CMS essentials, please wait ...</>');
 
         try {
+            // set the default parameters
+            $parameters = ['--no-interaction' => true];
+
             // migrate database
             if ($this->option('refresh')) {
-                Artisan::call('migrate:refresh', ['--no-interaction' => true]);
+                // if standalone, add force option
+                if ($this->option('standalone')) {
+                    $parameters = array_merge($parameters, ['--force' => true]);
+                }
+                Artisan::call('migrate:refresh', $parameters);
             } else {
-                Artisan::call('migrate', ['--no-interaction' => true]);
+                // if standalone, add force option
+                if ($this->option('standalone')) {
+                    $parameters = array_merge($parameters, ['--force' => true]);
+                }
+                Artisan::call('migrate', $parameters);
             }
 
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database migration complete!</>');
 
             // setup basic content types
-            Artisan::call('db:seed', ['--no-interaction' => true]);
+            Artisan::call('db:seed', $parameters);
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Database seeding complete!</>');
 
             // setup passport authentication
             $framework = app()->version();
             if ((float) $framework >= 11.0) {
-                Artisan::call('install:api', ['--no-interaction' => true, '--passport' => true]);
+                $parameters = array_merge($parameters, ['--passport' => true]);
+                Artisan::call('install:api', $parameters);
             } else {
-                Artisan::call('passport:install', ['--no-interaction' => true, '--uuids' => true]);
+                $parameters = array_merge($parameters, ['--uuids' => true]);
+                Artisan::call('passport:install', $parameters);
             }
 
             $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Authentication setup complete!</>');
