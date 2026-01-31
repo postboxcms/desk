@@ -185,6 +185,12 @@ fi
 
 EXEC="yes"
 
+# Check for standalone flag
+if [ "$3" == "--standalone" ]; then
+    EXEC="no"
+    DESK_SKIP_CHECKS=1
+fi
+
 if [ -z "$DESK_SKIP_CHECKS" ]; then
     # Ensure that Docker is running...
     if ! docker info > /dev/null 2>&1; then
