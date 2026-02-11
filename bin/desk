@@ -191,6 +191,13 @@ if [ "$3" == "--standalone" ]; then
     DESK_SKIP_CHECKS=1
 fi
 
+# check for CMS_INSTALLATION_MODE flag
+source .env
+if [ "$CMS_INSTALLATION_MODE"  == "host" ]; then
+    EXEC="no"
+    DESK_SKIP_CHECKS=1
+fi
+
 if [ -z "$DESK_SKIP_CHECKS" ]; then
     # Ensure that Docker is running...
     if ! docker info > /dev/null 2>&1; then
@@ -271,7 +278,7 @@ elif [ "$1" == "artisan" ] || [ "$1" == "art" ] || [ "$1" == "a" ]; then
         ARGS+=(exec -u desk)
         [ ! -t 0 ] && ARGS+=(-T)
         ARGS+=("$APP_SERVICE" php artisan)
-    elif [ "$2" == "--standalone" ]; then
+    elif [ "$2" == "--standalone" ] || [ "$DESK_SKIP_CHECKS" == "1" ]; then
         ARGS+=(exec php artisan)
     else
         desk_is_not_running
@@ -631,7 +638,7 @@ if [ "$1" == "down" ] && [ "$2" == "-v" ]; then
 fi
 
 # Run Docker Compose with the defined arguments...
-if [ "$2" == "--standalone" ]; then
+if [ "$2" == "--standalone" ] || [ "$DESK_SKIP_CHECKS" == "1" ]; then
     "${ARGS[@]}" "$@"
 else
     "${DOCKER_COMPOSE[@]}" "${ARGS[@]}" "$@"
