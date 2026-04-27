@@ -36,11 +36,11 @@ class PublishCommand extends Command
             $this->laravel->basePath('docker-compose.yml'),
             str_replace(
                 [
-                    './vendor/postboxcms/desk/runtimes/8.4',
-                    './vendor/postboxcms/desk/runtimes/8.3',
-                    './vendor/postboxcms/desk/runtimes/8.2',
-                    './vendor/postboxcms/desk/runtimes/8.1',
-                    './vendor/postboxcms/desk/runtimes/8.0',
+                    './vendor/postboxcms/desk/runtimes/php/8.4',
+                    './vendor/postboxcms/desk/runtimes/php/8.3',
+                    './vendor/postboxcms/desk/runtimes/php/8.2',
+                    './vendor/postboxcms/desk/runtimes/php/8.1',
+                    './vendor/postboxcms/desk/runtimes/php/8.0',
                     './vendor/postboxcms/desk/database/mysql',
                     './vendor/postboxcms/desk/database/pgsql'
                 ],
