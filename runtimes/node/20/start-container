@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [ "$SUPERVISOR_NODE_USER" != "root" ] && [ "$SUPERVISOR_NODE_USER" != "desk" ]; then
+    echo "You should set SUPERVISOR_NODE_USER to either 'desk' or 'root'."
+    exit 1
+fi
+
+if [ ! -z "$WWWUSER" ]; then
+    usermod -u $WWWUSER desk
+fi
+
+if [ ! -d /.npm ]; then
+    mkdir /.npm
+fi
+
+chmod -R ugo+rw /.npm
+
+if [ ! -d /var/log/supervisor ]; then
+    mkdir -p /var/log/supervisor
+fi
+
+if [ $# -gt 0 ]; then
+    if [ "$SUPERVISOR_NODE_USER" = "root" ]; then
+        exec "$@"
+    else
+        exec gosu $WWWUSER "$@"
+    fi
+else
+    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+fi
