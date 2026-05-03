@@ -10,8 +10,10 @@ WORKDIR /var/www/html
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
-ENV SUPERVISOR_NODE_COMMAND="pm2 start /var/www/html/server/index.js --name=postbox"
+ENV SUPERVISOR_NODE_COMMAND="node /var/www/html/server/index.js"
 ENV SUPERVISOR_NODE_USER="desk"
+ENV SSR_HOST="0.0.0.0"
+ENV SSR_PORT="80"
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -27,7 +29,6 @@ RUN apt-get update && apt-get upgrade -y \
     && apt-get update \
     && apt-get install -y nodejs \
     && npm install -g npm \
-    && npm install -g pm2 \
     && npm install -g pnpm \
     && npm install -g bun \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /etc/apt/keyrings/yarn.gpg >/dev/null \
@@ -50,6 +51,10 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 desk
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod +x /usr/local/bin/start-container
+
+# Install npm dependencies and build the frontend
+RUN npm install 2>&1 | tail -20
+RUN npm run build 2>&1 | tail -20
 
 EXPOSE 80/tcp
 
