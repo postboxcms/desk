@@ -15,6 +15,13 @@ fi
 
 chmod -R ugo+rw /.npm
 
+# if [ ! -d /home/desk/.pm2 ]; then
+#     mkdir -p /home/desk/.pm2
+#     chown -R desk:desk /home/desk/.pm2
+# fi
+
+# chmod -R u+rw /home/desk/.pm2
+
 if [ ! -d /var/log/supervisor ]; then
     mkdir -p /var/log/supervisor
 fi
