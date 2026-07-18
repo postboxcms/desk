@@ -54,6 +54,9 @@ class InstallCommand extends Command
             return 1;
         }
 
+        $this->call('vendor:publish', ['--tag' => 'desk-docker', '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'desk-database', '--force' => true]);
+
         $this->buildDockerCompose($services);
         $this->replaceEnvVariables($services);
         $this->configurePhpUnit();
