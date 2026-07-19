@@ -1,2 +1,2 @@
-SELECT 'CREATE DATABASE postbox'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'postbox')\gexec
+SELECT 'CREATE DATABASE ${POSTGRES_DB}'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${POSTGRES_DB}')\gexec
