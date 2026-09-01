@@ -110,29 +110,6 @@ trait InteractsWithDockerComposeServices
         $yaml = Yaml::dump($compose, Yaml::DUMP_OBJECT_AS_MAP);
 
         $yaml = str_replace('{{PHP_VERSION}}', $this->hasOption('php') ? $this->option('php') : '8.5', $yaml);
-        $yaml = str_replace(
-            [
-                './vendor/postboxcms/desk/runtimes/php/8.5',
-                './vendor/postboxcms/desk/runtimes/php/8.4',
-                './vendor/postboxcms/desk/runtimes/php/8.3',
-                './vendor/postboxcms/desk/runtimes/php/8.2',
-                './vendor/postboxcms/desk/runtimes/php/8.1',
-                './vendor/postboxcms/desk/runtimes/php/8.0',
-                './vendor/postboxcms/desk/database/mysql',
-                './vendor/postboxcms/desk/database/pgsql',
-            ],
-            [
-                './docker/8.5',
-                './docker/8.4',
-                './docker/8.3',
-                './docker/8.2',
-                './docker/8.1',
-                './docker/8.0',
-                './docker/mysql',
-                './docker/pgsql',
-            ],
-            $yaml
-        );
 
         file_put_contents($this->laravel->basePath('docker-compose.yml'), $yaml);
     }
