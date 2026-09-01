@@ -20,7 +20,7 @@ class InstallCommand extends Command
     protected $signature = 'desk:install
                 {--with= : The services that should be included in the installation}
                 {--devcontainer : Create a .devcontainer configuration directory}
-                {--php=8.3 : The PHP version that should be used}
+                {--php=8.5 : The PHP version that should be used}
                 {--standalone : Skip Docker installation and proceed with manual setup}';
 
     /**
@@ -53,6 +53,9 @@ class InstallCommand extends Command
 
             return 1;
         }
+
+        $this->call('vendor:publish', ['--tag' => 'desk-docker', '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'desk-database', '--force' => true]);
 
         $this->buildDockerCompose($services);
         $this->replaceEnvVariables($services);
