@@ -16,6 +16,7 @@ mysql:
     networks:
         - desk
     healthcheck:
-        test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
-        retries: 3
+        test: ["CMD-SHELL", 'if [ -z "${DB_PASSWORD}" ]; then mysqladmin ping -h localhost; else mysqladmin -u"${DB_USERNAME}" -p"${DB_PASSWORD}" ping -h localhost; fi']
+        interval: 10s
         timeout: 5s
+        retries: 10
