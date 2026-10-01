@@ -52,7 +52,7 @@ class DeskServiceProvider extends ServiceProvider implements DeferrableProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../runtimes' => $this->app->basePath('docker'),
+                __DIR__ . '/../runtimes/php' => $this->app->basePath('docker'),
             ], ['desk', 'desk-docker']);
 
             $this->publishes([

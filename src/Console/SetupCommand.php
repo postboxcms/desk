@@ -4,6 +4,7 @@ namespace PostboxCMS\Desk\Console;
 
 use Artisan;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Number;
 
 #[AsCommand(name: 'cms:setup')]
@@ -41,6 +42,8 @@ class SetupCommand extends Command
         $this->output->writeln('<fg=yellow>➜</> <options=bold><fg=yellow>INFO:</> Setting up CMS essentials, please wait ...</>');
 
         try {
+            $this->waitForDatabaseConnection();
+
             // set the default parameters
             $parameters = ['--no-interaction' => true];
 
@@ -82,5 +85,22 @@ class SetupCommand extends Command
             $this->output->writeln('<fg=red>➜</> <options=bold><fg=red>ERROR</>: ' . $e->getMessage() . '</>');
         }
 
+    }
+
+    protected function waitForDatabaseConnection(int $timeoutSeconds = 30): void
+    {
+        $start = microtime(true);
+
+        while (microtime(true) - $start < $timeoutSeconds) {
+            try {
+                DB::connection()->getPdo();
+
+                return;
+            } catch (\Throwable $e) {
+                usleep(500000);
+            }
+        }
+
+        throw new \RuntimeException('Database connection was not available within ' . $timeoutSeconds . ' seconds.');
     }
 }
