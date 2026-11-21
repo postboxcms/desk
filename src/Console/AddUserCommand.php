@@ -2,7 +2,7 @@
 
 namespace PostboxCMS\Desk\Console;
 
-use PostboxCMS\Desk\Console\Models\User;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 #[AsCommand(name: 'cms:adduser')]
